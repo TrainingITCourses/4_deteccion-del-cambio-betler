@@ -3,7 +3,9 @@
 
 <app-search-form (searchFilters)="onSearch($event)"></app-search-form>
 
-<app-result-list [launchesResult]="filteredLaunches"></app-result-list>
+<app-result-list 
+  [launchesResult]="filteredLaunches">
+</app-result-list>
 
 <router-outlet></router-outlet>
 

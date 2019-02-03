@@ -1,7 +1,17 @@
 <form #searchForm>
   <div class="form-group" style="margin-top:1em;">
     <label for="estado" style="display:inline-block;width:5em;">Estado</label>
-    <input #estadoInput type="text" class="form-control" id="estado">
+    <!-- <input #estadoInput type="text" class="form-control" id="estado"> -->
+    <select #estadoInput class="form-control">
+      <option value="-1" selected="selected"></option>
+      <option value="1">Launch is GO</option>
+      <option value="2">Launch is NO-GO</option>
+      <option value="3">Launch was a success</option>
+      <option value="4">Launch failed</option>
+      <option value="5">Unplanned hold</option>
+      <option value="6">Vehicle is in flight</option>
+      <option value="7">There was a partial failure during launch</option>
+    </select>    
   </div>
 
   <div class="form-group" style="margin-top:1em;">

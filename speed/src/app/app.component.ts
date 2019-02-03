@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Launch } from './store/models/launch';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Status } from './store/models/status';
 
 @Component({
   selector: 'app-root',
@@ -11,24 +12,32 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AppComponent implements OnInit {
-  private configUrl = 'assets/data/launches.json';
+  private launchesUrl = 'assets/data/launches.json';
   title = 'speed';
   private launches: Launch[];
+  private statuses: Status[];
   public filteredLaunches: Launch[];
 
   constructor(private http: HttpClient) { }
 
   public onSearch(event) {
-    //console.log(this.launches.launches);
-    this.filteredLaunches = this.launches.filter((launch) => launch.name === "Vostok-K | Vostok 1");
+    var aux = this.launches;
+
+    // Filter by estado
+    if (event.estado != "") {
+      aux = aux.filter((launch) => launch.status == event.estado);
+    }
+
+    // Filter by agencia
+
+    // Filter by tipo
+
+    this.filteredLaunches = aux;
   }
 
   ngOnInit(): void {
-    /*
-    this.http.get<Launch[]>(this.configUrl).subscribe((res: Launch[]) => {
-      this.launches = res;
-    });*/
-    this.http.get<Response>(this.configUrl).subscribe((res: Response) => {
+    // Cachea todos los lanzamientos
+    this.http.get<Response>(this.launchesUrl).subscribe((res: Response) => {
       this.launches = res['launches'];
     });
   }
