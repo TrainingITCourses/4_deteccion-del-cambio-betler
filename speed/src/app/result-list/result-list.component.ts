@@ -15,8 +15,10 @@ import { HttpClient } from '@angular/common/http';
 export class ResultListComponent implements OnInit {
   
   @Input() public launchesResult: Launch[];
-  @Input() public statuses: Status[];
+  public statuses: Status[];
   private statusesUrl = 'assets/data/launchstatus.json';
+  public missionTypes;
+  private typesUrl = 'assets/data/missiontypes.json';
 
   constructor(private http: HttpClient) { }
 
@@ -25,7 +27,9 @@ export class ResultListComponent implements OnInit {
     // TODO -> cargarla en el combo desde esta lista
     this.http.get<Response>(this.statusesUrl).subscribe((res: Response) => {
       this.statuses = res['types'];
-      //console.log(this.statuses);
+    });
+    this.http.get<Response>(this.typesUrl).subscribe((res: Response) => {
+      this.missionTypes = res['types'];
     });
   }
 
@@ -67,6 +71,27 @@ export class ResultListComponent implements OnInit {
     if (aux.length == 1) {
       return aux[0].description;
     } else {
+      return "N/A";
+    }
+  }
+
+  getMissionTypeDescription(launch) {
+    try {
+      var aux = this.missionTypes.filter((type) => type.id == launch.missions[0].type);
+      if (aux.length == 1) {
+        return aux[0].name;
+      } else {
+        return "N/A";
+      }
+    } catch (e) {
+      return "N/A";
+    }
+  }
+
+  getMissionType(launch) {
+    try {
+      return launch.missions[0].type;
+    } catch (e) {
       return "N/A";
     }
   }

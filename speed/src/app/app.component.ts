@@ -21,16 +21,54 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   public onSearch(event) {
+    console.log("Searching:");
+    console.log(event);
+
     var aux = this.launches;
 
     // Filter by estado
-    if (event.estado != "") {
+    if (event.estado != "-1") {
       aux = aux.filter((launch) => launch.status == event.estado);
     }
 
     // Filter by agencia
+    if (event.agencia != "") {
+      aux = aux.filter((launch) => {
+        var coincidences = 0;
+        if (launch.missions[0] && launch.missions[0].agencies && launch.missions[0].agencies[0]) {
+          if (launch.missions[0].agencies[0].name.search(event.agencia) != -1){
+            coincidences++;
+          }
+        }
+        if (launch.rocket.agencies && launch.rocket.agencies[0]) {
+          if (launch.rocket.agencies[0].name.search(event.agencia) != -1){
+            coincidences++;
+          }
+        }
+        console.log(launch.location);
+        if (launch.location && launch.location.pads[0] && launch.location.pads[0].agencies && launch.location.pads[0].agencies[0]) {
+          if (launch.location.pads[0].agencies[0].name.search(event.agencia) != -1){
+            coincidences++;
+          }
+        }
+
+        return coincidences > 0;
+      });
+    }
 
     // Filter by tipo
+    // TODO falla, hay algunas sin misión
+    if (event.tipo != "-1") {
+      console.log("Buscando tipo " + event.tipo);
+      aux = aux.filter((launch) => {
+        if (launch.missions[0]) {
+          return launch.missions[0].type == event.tipo;
+        } else {
+          return false;
+        }
+      });
+      console.log("Encontrados: " + aux.length);
+    }
 
     this.filteredLaunches = aux;
   }
@@ -41,4 +79,5 @@ export class AppComponent implements OnInit {
       this.launches = res['launches'];
     });
   }
+
 }
