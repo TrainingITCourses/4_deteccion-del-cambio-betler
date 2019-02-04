@@ -21,8 +21,6 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   public onSearch(event) {
-    console.log("Searching:");
-    console.log(event);
 
     var aux = this.launches;
 
@@ -45,7 +43,6 @@ export class AppComponent implements OnInit {
             coincidences++;
           }
         }
-        console.log(launch.location);
         if (launch.location && launch.location.pads[0] && launch.location.pads[0].agencies && launch.location.pads[0].agencies[0]) {
           if (launch.location.pads[0].agencies[0].name.search(event.agencia) != -1){
             coincidences++;
